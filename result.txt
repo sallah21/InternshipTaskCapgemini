@@ -1,0 +1,3 @@
+1,Apple,iPhone 12,Bar,2020,6.1,999
+2,Apple,Iphone,Bar,2020,6.2,70.2
+4,Xiaomi,Mi 10,Bar,2020,6.67,499

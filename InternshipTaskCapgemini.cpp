@@ -7,6 +7,7 @@
 #include <vector>
 #include <algorithm>
 #pragma comment(lib, "windowscodecs.lib")
+#include<fstream>
 using namespace std;
 bool comp(const pair<float, int>& a, const pair<float, int>& b) {
 	return a.second < b.second;
@@ -122,6 +123,45 @@ public:
 		
 
 	}
+	void save_to_file() {
+		ofstream outputfile("result.txt");
+		for (const auto& phone : phones) {
+			outputfile << phone.first << ","
+				<< phone.second.brand_name << ","
+				<< phone.second.model_name << ","
+				<< phone.second.form_factor << ","
+				<< phone.second.year_of_issue << ","
+				<< phone.second.screen_size << ","
+				<< phone.second.price << std::endl;
+		}
+
+		outputfile.close();
+	}
+	void load_from_file(string filename) {
+		ifstream file(filename);
+		if (!file.is_open())
+		{
+			cerr << "Error opening file: " << filename << endl;
+			return;
+		}
+
+		std::string line;
+		while (getline(file, line, ',')) {
+			
+			string brand;
+			string model;
+			string form_factor;
+			int year_of_issue;
+			float screen_size;
+			float price;
+
+			add_phone(Phone(brand, model, form_factor, year_of_issue, screen_size, price));
+			
+		}
+
+
+		file.close();
+	}
 	~Phone_shop() {};
 	map<int,Phone> phones;
 
@@ -159,7 +199,12 @@ int main()
 	cout << "--------------------------------------" << endl;
 	shop.get_all_phones();
 	cout << "--------------------------------------" << endl;
-
+	shop.save_to_file();
+	cout << "--------------------------------------" << endl;
+	Phone_shop shop2;
+	//shop2.load_from_file("result.txt"); not working
+	cout << "--------------------------------------" << endl;
+	shop2.get_all_phones();
 	return 0;
 }
 
