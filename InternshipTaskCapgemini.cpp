@@ -50,10 +50,10 @@ public:
 		map<int, Phone> ph;
 		phones = ph;
 	}
-	void add_phone(Phone& ph ) {
+	void add_phone(const Phone& ph ) {
 		
-		phones[phones.size() + 1] =  ph;
-
+		//this->phones[this->phones.size() + 1] =  ph;
+		phones.insert(pair<int, Phone>(phones.size()+1, ph));
 		
 	}
 	void add_phone(string brand_name, std::string model_name, std::string form_factor, int year_of_issue, float screen_size, float price) {
@@ -65,6 +65,7 @@ public:
 	}
 	void get_all_phones() {
 		for (auto item : phones) {
+			cout << "Id: " << item.first << endl;
 			item.second.get_info();
 		}
 	}
@@ -90,11 +91,13 @@ public:
 			++brands[phone.second.brand_name];
 		}
 		for (auto item : brands) {
+			cout << "Brand " << item.first << " Quant: " << item.second << endl;
 			if (item.second > max_quantity) {
 				result = item.first;
+				max_quantity = item.second;
 			}
 		}
-		cout << "Most popular brand " << result;
+		cout << "Most popular brand " << result<<endl;
 	}
 	void get_top_3_screensize() {
 		map<float, int> screen_sizes;
@@ -110,7 +113,7 @@ public:
 		for (auto const& element : sorted_ss) {
 			if(i <=3)
 			{
-				cout << " Place " << i + 1 << " Size: " << element.first << " Quantity " << element.second;
+				cout << " Place " << i  << " Size: " << element.first << " Quantity " << element.second << endl;
 				i++;
 			}
 			else { break; }
@@ -126,12 +129,10 @@ public:
 
 int main()
 {
-	Phone_shop shop=  Phone_shop();
+	Phone_shop shop;
 	Phone p1( "Apple", "iPhone 12", "Bar", 2020, 6.1, 999);
 	Phone p3("Samsung", "Galaxy S21", "Bar", 2020, 6.2, 899);
-	Phone p4(
-		"Xiaomi", "Mi 10", "Bar", 2020, 6.67, 499
-);
+	Phone p4("Xiaomi", "Mi 10", "Bar", 2020, 6.67, 499);
 
 	string name = "Apple";
 	string model = "Iphone";
@@ -141,6 +142,24 @@ int main()
 	float price = 70.2;
 	Phone p2(name, model, form_factor, year_of_issue, screen_size,price);
 	shop.add_phone(p1);
+	shop.add_phone(p2);
+	shop.add_phone(p3);
+	shop.add_phone(p4);
+	shop.get_by_brand("Apple");
+	cout << "--------------------------------------" << endl;
+	shop.get_all_phones();
+	cout << "--------------------------------------" << endl;
+	shop.get_brand_by_quantity();
+	cout << "--------------------------------------" << endl;
+	shop.get_top_3_screensize();
+	cout << "--------------------------------------" << endl;
+	shop.get_by_form_and_screen("Bar", 6.2);
+	cout << "--------------------------------------" << endl;
+	shop.delete_phone(3);
+	cout << "--------------------------------------" << endl;
+	shop.get_all_phones();
+	cout << "--------------------------------------" << endl;
+
 	return 0;
 }
 
